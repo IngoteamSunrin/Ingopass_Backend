@@ -21,12 +21,15 @@ export class AuthController {
     @UseGuards(AuthGuard('google'))
     async googleAuthCallback(@Req() req: any, @Res() res: any): Promise<void> {
         const payload: JwtPayload = {
-            sub: req.user.id,
+            sub: req.user.providerId,
             email: req.user.email
         }
-        const { accessToken } = this.authService.getToken(payload)
+        const { accessToken, refreshToken } = this.authService.getToken(payload)
 
         res.cookie('access-token', accessToken)
+        res.cookie('refresh-token', refreshToken)
+
+        // await this.updateHashedRefreshToken(req.user.id, refreshToken)
         res.redirect('/')
         return this.authService.login(req)
     }
