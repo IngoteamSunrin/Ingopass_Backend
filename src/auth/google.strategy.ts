@@ -32,7 +32,7 @@ export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
             // TODO: add jwt
 
             const user = {
-                providerId: Number(id),
+                providerId: id,
                 email: emails[0].value,
                 firstName: name.givenName,
                 lastName: name.familyName,

@@ -51,35 +51,25 @@ export class AuthController {
         }
 
         try {
-            console.log('1')
             const { accessToken, refreshToken } = this.authService.getToken(payload)
-            console.log('2')
 
             res.cookie('access-token', accessToken)
             res.cookie('refresh-token', refreshToken)
-
-            console.log('3')
 
             // console.log(accessToken, refreshToken)
             req.user.jwt = refreshToken
             console.log(req.user)
             console.log(User)
 
-            console.log('4')
-
             this.authService.create(req.user)
-
-            console.log('5')
-
             // await this.updateHashedRefreshToken(req.user.id, refreshToken)
             res.redirect('/')
-
-            console.log('6')
             return this.authService.login(req)
         }
         catch (error) {
-            console.log(error)
             res.redirect('/')
+            console.log(error)
+            return this.authService.login(req)
         }
     }
 }

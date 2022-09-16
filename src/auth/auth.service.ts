@@ -47,13 +47,13 @@ export class AuthService {
     getToken(payload: JwtPayload) {
         const env = process.env
         const accessToken: any = this.jwtService.sign(payload, {
-            expiresIn: '2h',
-            secret: env.JWT_SECRET,
+            expiresIn: env.ACCESS_TOKEN_EXPIRATION,
+            secret: env.ACCESS_TOKEN_SECRET
         })
 
         const refreshToken: any = this.jwtService.sign(payload, {
-            expiresIn: '15s',
-            secret: env.JWT_SECRET,
+            expiresIn: env.REFRESH_TOKEN_EXPIRATION,
+            secret: env.REFRESH_TOKEN_SECRET
         })
 
         return { accessToken, refreshToken }

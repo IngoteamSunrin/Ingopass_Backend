@@ -1,1 +1,1 @@
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_TOKEN = process.env.ACCESS_TOKEN_SECRET

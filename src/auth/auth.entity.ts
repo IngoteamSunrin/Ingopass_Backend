@@ -2,8 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    providerId: number
+    @PrimaryGeneratedColumn('uuid')
+    providerId: string
 
     @Column()
     email: string
