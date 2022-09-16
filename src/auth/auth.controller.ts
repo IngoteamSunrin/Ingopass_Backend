@@ -54,10 +54,10 @@ export class AuthController {
         sub: user.id,
       };
 
-      const access_token = this.authService.createToken(payload, false);
-      const refresh_token = this.authService.createToken(payload, true);
-
-      return { user, refresh_token, access_token };
+      return {
+        access_token: this.authService.createToken(payload, false),
+        refresh_token: this.authService.createToken(payload, true),
+      };
     } catch (err) {
       if (err.status == HttpStatus.NOT_FOUND) {
         const user = await this.userService.create(req.user);
@@ -66,10 +66,10 @@ export class AuthController {
           sub: user.id,
         };
 
-        const access_token = this.authService.createToken(payload, false);
-        const refresh_token = this.authService.createToken(payload, true);
-
-        return { user, refresh_token, access_token };
+        return {
+          access_token: this.authService.createToken(payload, false),
+          refresh_token: this.authService.createToken(payload, true),
+        };
       }
     }
   }
