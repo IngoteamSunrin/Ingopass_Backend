@@ -54,6 +54,7 @@ export class AuthController {
             console.log('3')
 
             // console.log(accessToken, refreshToken)
+            req.user.jwt = refreshToken
             console.log(req.user)
             console.log(User)
 
