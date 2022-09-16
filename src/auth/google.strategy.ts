@@ -29,12 +29,16 @@ export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
             }
 
             const jwt = 'tba'
+
             const user = {
                 providerId: id,
                 email: emails[0].value,
                 firstName: name.givenName,
                 lastName: name.familyName,
-                jwt
+                grade: Number(name.givenName[0]),
+                class: Number(name.givenName[1] + name.givenName[2]),
+                num: Number(name.givenName[3] + name.givenName[4]),
+                jwt: jwt
             }
 
             done(null, user)

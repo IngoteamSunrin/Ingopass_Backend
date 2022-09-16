@@ -2,6 +2,7 @@ import { Controller, Get, UseGuards, Res, Req } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { AuthGuard } from '@nestjs/passport'
 import { AuthService } from './auth.service'
+import { mysql } from 'mysql'
 
 interface JwtPayload {
     sub: string
@@ -28,6 +29,10 @@ export class AuthController {
 
         res.cookie('access-token', accessToken)
         res.cookie('refresh-token', refreshToken)
+
+        console.log(accessToken, refreshToken)
+        console.log(req.user)
+
 
         // await this.updateHashedRefreshToken(req.user.id, refreshToken)
         res.redirect('/')
