@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import 'dotenv/config';
@@ -27,10 +27,7 @@ export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
       console.log(profile);
 
       if (profile._json.hd != 'sunrint.hs.kr') {
-        console.log('not certified user');
-        throw {
-          msg: 'not certified user',
-        };
+        throw new HttpException('Not Sunrint Email', HttpStatus.UNAUTHORIZED);
       }
 
       const user = {

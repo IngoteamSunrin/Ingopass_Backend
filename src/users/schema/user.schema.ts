@@ -11,6 +11,9 @@ export class User {
   email: string;
 
   @Prop({ required: true })
+  major: string;
+
+  @Prop({ required: true })
   firstName: string;
 
   @Prop({ required: true })

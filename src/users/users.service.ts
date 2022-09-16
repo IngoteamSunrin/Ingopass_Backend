@@ -2,31 +2,29 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User, UserDocument } from './schema/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateUserDto } from './dto/user-create.dto';
-import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async findAll(): Promise<UserDto[]> {
+  async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
 
-  async findById(id: string): Promise<UserDto> {
+  async findById(id: string): Promise<User> {
     try {
       return this.userModel.findOne({ id: id }).exec();
     } catch (err) {
-      throw new HttpException('User Not Found', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
     }
   }
 
-  async create(createUserDto: CreateUserDto): Promise<UserDto> {
-    const newUser = new this.userModel(createUserDto);
+  async create(data: object): Promise<User> {
+    const newUser = new this.userModel(data);
     return newUser.save();
   }
 
-  async update(id: string, key: any, value: any): Promise<UserDto> {
+  async update(id: string, key: any, value: any): Promise<User> {
     return this.userModel
       .findOneAndUpdate({ id: id }, { $set: { key: value } })
       .exec();
