@@ -1,31 +1,31 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn('uuid')
-    providerId: string
+  @PrimaryGeneratedColumn('uuid')
+  providerId: string;
 
-    @Column()
-    email: string
+  @Column()
+  email: string;
 
-    @Column()
-    firstName: number
+  @Column()
+  firstName: number;
 
-    @Column()
-    lastName: string
+  @Column()
+  lastName: string;
 
-    @Column()
-    grade: number
+  @Column()
+  grade: number;
 
-    @Column()
-    class: number
+  @Column()
+  class: number;
 
-    @Column()
-    num: number
+  @Column()
+  num: number;
 
-    @Column({ default: 0 })
-    caution: boolean
+  @Column({ default: 0 })
+  caution: boolean;
 
-    @Column({ default: "" })
-    jwt: String
+  @Column({ default: '' })
+  jwt: string;
 }
