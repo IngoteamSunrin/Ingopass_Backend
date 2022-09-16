@@ -27,12 +27,19 @@ export class AuthController {
 
     @Get('reload')
     async refreshToken(@Req() req, @Res() res: any): Promise<void> {
-        const payload: JwtPayload = {
-            sub: req.user.providerId,
-            email: req.user.email
+        try {
+            const payload: JwtPayload = {
+                sub: req.user.providerId,
+                email: req.user.email
+            }
+
+            const refreshToken = this.authService.getToken(payload)
+            res.cookie('refresh-token', refreshToken)
+            res.rediret('/')
         }
-        const refreshToken = this.authService.getToken(payload)
-        res.cookie('refresh-token', refreshToken)
+        catch (error) {
+            res.rediret('/')
+        }
     }
 
     @Get('google/callback')

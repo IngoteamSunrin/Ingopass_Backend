@@ -15,13 +15,13 @@ export class User {
     lastName: string
 
     @Column()
-    grade: Number
+    grade: number
 
     @Column()
-    class: Number
+    class: number
 
     @Column()
-    num: Number
+    num: number
 
     @Column({ default: 0 })
     caution: boolean
