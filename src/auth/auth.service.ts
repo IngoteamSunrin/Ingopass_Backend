@@ -4,6 +4,8 @@ import { JwtPayload } from 'jsonwebtoken';
 import { User } from './auth.entity';
 import { getConnection, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
+import 'dotenv/config';
 
 @Injectable()
 export class AuthService {
@@ -37,26 +39,28 @@ export class AuthService {
           class: user.class,
           num: user.num,
           caution: user.caution,
-          jwt: user.jwt,
         })
         .where('id = :id', { providerId })
         .execute();
     }
   }
 
-  getToken(payload: JwtPayload) {
-    const env = process.env;
-    const accessToken: any = this.jwtService.sign(payload, {
-      expiresIn: env.ACCESS_TOKEN_EXPIRATION,
-      secret: env.ACCESS_TOKEN_SECRET,
-    });
-
-    const refreshToken: any = this.jwtService.sign(payload, {
-      expiresIn: env.REFRESH_TOKEN_EXPIRATION,
-      secret: env.REFRESH_TOKEN_SECRET,
-    });
-
-    return { accessToken, refreshToken };
+  async createToken(payload: JwtPayload, refresh: boolean) {
+    if (refresh) {
+      const token = this.jwtService.sign(payload, {
+        algorithm: 'HS512',
+        secret: process.env.JWT_SERECT,
+        expiresIn: '1y',
+      });
+      return token;
+    } else {
+      const token = this.jwtService.sign(payload, {
+        algorithm: 'HS512',
+        secret: process.env.JWT_SERECT,
+        expiresIn: '1w',
+      });
+      return token;
+    }
   }
   async login(req) {
     if (!req.user) {

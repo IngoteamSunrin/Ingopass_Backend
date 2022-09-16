@@ -1,5 +1,4 @@
-import { Controller, Get, UseGuards, Res, Req, Body } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Controller, Get, UseGuards, Res, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { User } from './auth.entity';
@@ -24,7 +23,7 @@ export class AuthController {
     };
     res.clearCookie('refresh-token', {});
     try {
-      const refreshToken = this.authService.getToken(payload);
+      const refreshToken = this.authService.createToken(payload, true);
       res.cookie('refresh-token', refreshToken);
       // TODO: edit refresh time and change deleteCookie to updateHashedRefreshToken
       // await this.updateHashedRefreshToken(req.user.providerId, refreshToken)
@@ -45,13 +44,9 @@ export class AuthController {
     };
 
     try {
-      const { accessToken, refreshToken } = this.authService.getToken(payload);
+      res.cookie('accessToken', this.authService.createToken(payload, false));
+      res.cookie('refreshToken', this.authService.createToken(payload, true));
 
-      res.cookie('access-token', accessToken);
-      res.cookie('refresh-token', refreshToken);
-
-      // console.log(accessToken, refreshToken)
-      req.user.jwt = refreshToken;
       console.log(req.user);
       console.log(User);
 
