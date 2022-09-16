@@ -18,20 +18,12 @@ export class AuthService {
         return this.userRepository.find()
     }
 
-    findOne(id: String): Promise<User> {
-        return this.userRepository.findOne(id)
-    }
-
     async create(user: User): Promise<void> {
         await this.userRepository.save(user)
     }
 
-    async remove(id: number): Promise<void> {
-        await this.userRepository.delete(id)
-    }
-
     async update(providerId: number, user: User): Promise<void> {
-        const existUser = await this.userRepository.findOne(id)
+        const existUser = await this.userRepository.find()
         if (existUser) {
             await getConnection()
                 .createQueryBuilder()
