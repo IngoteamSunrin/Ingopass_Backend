@@ -26,19 +26,23 @@ export class AuthController {
     }
 
     @Get('reload')
-    async refreshToken(@Req() req, @Res() res: any): Promise<void> {
+    async refresh(@Req() req, @Res() res: any): Promise<void> {
+        const payload: JwtPayload = {
+            sub: req.user.providerId,
+            email: req.user.email
+        }
+        res.clearCookie('refresh-token', {})
         try {
-            const payload: JwtPayload = {
-                sub: req.user.providerId,
-                email: req.user.email
-            }
-
             const refreshToken = this.authService.getToken(payload)
             res.cookie('refresh-token', refreshToken)
-            res.rediret('/')
+            // TODO: edit refresh time and change deleteCookie to updateHashedRefreshToken
+            // await this.updateHashedRefreshToken(req.user.providerId, refreshToken)
+            res.send(refreshToken)
+            res.redirect('/')
         }
         catch (error) {
-            res.rediret('/')
+            res.clearCookie('access-token')
+            res.redirect('/')
         }
     }
 
@@ -62,7 +66,6 @@ export class AuthController {
             console.log(User)
 
             this.authService.create(req.user)
-            // await this.updateHashedRefreshToken(req.user.id, refreshToken)
             res.redirect('/')
             return this.authService.login(req)
         }
