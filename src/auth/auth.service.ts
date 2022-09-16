@@ -58,9 +58,6 @@ export class AuthService {
 
         return { accessToken, refreshToken }
     }
-    insertUser(user: any, done: any) {
-        return done(done, user)
-    }
     async login(req) {
         if (!req.user) {
             return 'No user!'

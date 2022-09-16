@@ -4,11 +4,7 @@ import {
     UseGuards,
     Res,
     Req,
-    Body,
-    Delete,
-    Param,
-    Post,
-    Put
+    Body
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { AuthGuard } from '@nestjs/passport'
@@ -29,6 +25,16 @@ export class AuthController {
 
     }
 
+    @Get('reload')
+    async refreshToken(@Req() req, @Res() res: any): Promise<void> {
+        const payload: JwtPayload = {
+            sub: req.user.providerId,
+            email: req.user.email
+        }
+        const refreshToken = this.authService.getToken(payload)
+        res.cookie('refresh-token', refreshToken)
+    }
+
     @Get('google/callback')
     @UseGuards(AuthGuard('google'))
     async googleAuthCallback(@Req() req: any, @Res() res: any): Promise<void> {
@@ -36,19 +42,36 @@ export class AuthController {
             sub: req.user.providerId,
             email: req.user.email
         }
-        const { accessToken, refreshToken } = this.authService.getToken(payload)
 
-        res.cookie('access-token', accessToken)
-        res.cookie('refresh-token', refreshToken)
+        try {
+            console.log('1')
+            const { accessToken, refreshToken } = this.authService.getToken(payload)
+            console.log('2')
 
-        console.log(accessToken, refreshToken)
-        console.log(req.user)
+            res.cookie('access-token', accessToken)
+            res.cookie('refresh-token', refreshToken)
 
-        this.authService.create(req.user)
+            console.log('3')
 
-        // await this.updateHashedRefreshToken(req.user.id, refreshToken)
-        res.redirect('/')
-        return this.authService.login(req)
+            // console.log(accessToken, refreshToken)
+            console.log(req.user)
+            console.log(User)
+
+            console.log('4')
+
+            this.authService.create(req.user)
+
+            console.log('5')
+
+            // await this.updateHashedRefreshToken(req.user.id, refreshToken)
+            res.redirect('/')
+
+            console.log('6')
+            return this.authService.login(req)
+        }
+        catch (error) {
+            console.log(error)
+            res.redirect('/')
+        }
     }
-
 }
