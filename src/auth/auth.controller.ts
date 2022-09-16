@@ -57,9 +57,6 @@ export class AuthController {
       const access_token = this.authService.createToken(payload, false);
       const refresh_token = this.authService.createToken(payload, true);
 
-      res.cookie('access_token', access_token);
-      res.cookie('refresh_token', refresh_token);
-
       return { user, refresh_token, access_token };
     } catch (err) {
       if (err.status == HttpStatus.NOT_FOUND) {
@@ -71,9 +68,6 @@ export class AuthController {
 
         const access_token = this.authService.createToken(payload, false);
         const refresh_token = this.authService.createToken(payload, true);
-
-        res.cookie('access_token', access_token);
-        res.cookie('refresh_token', refresh_token);
 
         return { user, refresh_token, access_token };
       }
