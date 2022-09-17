@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import 'dotenv/config';
+import { discrimMajor } from 'src/resources/major';
 
 @Injectable()
 export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
@@ -24,7 +25,6 @@ export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
   ) {
     try {
       const { id, name, emails } = profile;
-      console.log(profile);
 
       if (profile._json.hd != 'sunrint.hs.kr') {
         throw new HttpException('Not Sunrint Email', HttpStatus.UNAUTHORIZED);
@@ -33,11 +33,12 @@ export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
       const user = {
         id: id,
         email: emails[0].value,
-        firstName: name.givenName,
-        lastName: name.familyName,
-        grade: Number(name.givenName[0]),
-        class: Number(name.givenName[1] + name.givenName[2]),
-        num: Number(name.givenName[3] + name.givenName[4]),
+        name: name.givenName,
+        identity: name.familyName,
+        grade: Number(name.familyName.slice(0, 1)),
+        class: Number(name.familyName.slice(1, 3)),
+        num: Number(name.familyName.slice(3, 5)),
+        major: discrimMajor(Number(name.familyName.slice(1, 3))),
       };
 
       done(null, user);

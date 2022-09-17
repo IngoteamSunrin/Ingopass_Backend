@@ -11,23 +11,23 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async createToken(payload: JwtPayload, refresh: boolean): object {
+  async createToken(payload: JwtPayload, refresh: boolean): Promise<string> {
     if (refresh) {
       const token = this.jwtService.sign(payload, {
         algorithm: 'HS512',
-        secret: this.configService.get<string>('JWT_SERCET'),
+        secret: this.configService.get<string>('JWT_SECRET'),
         expiresIn: '1y',
       });
       return token;
     } else {
       const token = this.jwtService.sign(payload, {
         algorithm: 'HS512',
-        secret: this.configService.get<string>('JWT_SERCET'),
+        secret: this.configService.get<string>('JWT_SECRET'),
         expiresIn: '1w',
       });
       return token;
     }
   }
 
-  async verify() {}
+  async verify(token: string, refresh: boolean) {}
 }

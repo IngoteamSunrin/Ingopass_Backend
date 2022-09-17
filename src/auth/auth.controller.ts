@@ -46,31 +46,29 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthCallback(@Req() req: any, @Res() res: any): Promise<object> {
+  async googleAuthCallback(@Req() req: any, @Res() res: any): Promise<void> {
     try {
-      const user = await this.userService.findById(req.user.providerId);
+      const user = await this.userService.findById(req.user.id);
 
       const payload: JwtPayload = {
         sub: user.id,
       };
 
-      return {
-        access_token: this.authService.createToken(payload, false),
-        refresh_token: this.authService.createToken(payload, true),
-      };
+      res.json({
+        access_token: await this.authService.createToken(payload, false),
+        refresh_token: await this.authService.createToken(payload, true),
+      });
     } catch (err) {
-      if (err.status == HttpStatus.NOT_FOUND) {
-        const user = await this.userService.create(req.user);
+      const user = await this.userService.create(req.user);
 
-        const payload: JwtPayload = {
-          sub: user.id,
-        };
+      const payload: JwtPayload = {
+        sub: user.id,
+      };
 
-        return {
-          access_token: this.authService.createToken(payload, false),
-          refresh_token: this.authService.createToken(payload, true),
-        };
-      }
+      res.json({
+        access_token: await this.authService.createToken(payload, false),
+        refresh_token: await this.authService.createToken(payload, true),
+      });
     }
   }
 }

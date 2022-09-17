@@ -14,10 +14,10 @@ export class User {
   major: string;
 
   @Prop({ required: true })
-  firstName: string;
+  name: string;
 
   @Prop({ required: true })
-  lastName: string;
+  identity: string;
 
   @Prop({ required: true })
   grade: number;
