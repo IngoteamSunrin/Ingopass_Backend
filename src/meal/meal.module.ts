@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common'
+import { Module } from '@nestjs/common';
 
-import { MealController } from './meal.controller'
-import { MealService } from './meal.service'
+import { MealController } from './meal.controller';
+import { MealService } from './meal.service';
 
 @Module({
   controllers: [MealController],
   providers: [MealService],
   exports: [MealService],
 })
-export class AuthModule { }
+export class AuthModule {}

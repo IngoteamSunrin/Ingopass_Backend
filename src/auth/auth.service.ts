@@ -11,7 +11,7 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async createToken(payload: JwtPayload, refresh: boolean) {
+  async createToken(payload: JwtPayload, refresh: boolean): object {
     if (refresh) {
       const token = this.jwtService.sign(payload, {
         algorithm: 'HS512',

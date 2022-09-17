@@ -46,7 +46,7 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthCallback(@Req() req: any, @Res() res: any) {
+  async googleAuthCallback(@Req() req: any, @Res() res: any): Promise<object> {
     try {
       const user = await this.userService.findById(req.user.providerId);
 
