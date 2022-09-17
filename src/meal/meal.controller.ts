@@ -6,5 +6,8 @@ export class MealController {
   constructor(private readonly authService: MealService) {}
 
   @Get('info')
-  async mealInfo(@Req() req) {}
+  async mealInfo(@Req() req) {
+    console.log(req.user);
+    return 'test!';
+  }
 }
