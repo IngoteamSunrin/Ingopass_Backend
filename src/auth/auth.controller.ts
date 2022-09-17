@@ -1,18 +1,7 @@
-import {
-  Controller,
-  Get,
-  UseGuards,
-  Res,
-  Req,
-  HttpStatus,
-} from '@nestjs/common';
+import { Controller, Get, UseGuards, Res, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
-
-interface JwtPayload {
-  sub: string;
-}
 
 @Controller('auth')
 export class AuthController {
@@ -25,23 +14,22 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async login(@Req() req) {}
 
-  @Get('reload')
+  @Get('refresh')
   async refresh(@Req() req, @Res() res: any): Promise<void> {
-    const payload: JwtPayload = {
-      sub: req.user.providerId,
-    };
-    res.clearCookie('refreshToken', {});
-    try {
-      const refreshToken = this.authService.createToken(payload, true);
-      res.cookie('refreshToken', refreshToken);
-      // TODO: edit refresh time and change deleteCookie to updateHashedRefreshToken
-      // await this.updateHashedRefreshToken(req.user.providerId, refreshToken)
-      res.send(refreshToken);
-      res.redirect('/');
-    } catch (error) {
-      res.clearCookie('accessToken');
-      res.redirect('/');
-    }
+    const { token } = req.headers;
+
+    const decodePayload = await this.authService.verify(token);
+
+    res.json({
+      access_token: await this.authService.createToken({
+        id: decodePayload.id,
+        refresh: false,
+      }),
+      refresh_token: await this.authService.createToken({
+        id: decodePayload.id,
+        refresh: true,
+      }),
+    });
   }
 
   @Get('google/callback')
@@ -50,24 +38,28 @@ export class AuthController {
     try {
       const user = await this.userService.findById(req.user.id);
 
-      const payload: JwtPayload = {
-        sub: user.id,
-      };
-
       res.json({
-        access_token: await this.authService.createToken(payload, false),
-        refresh_token: await this.authService.createToken(payload, true),
+        access_token: await this.authService.createToken({
+          id: user.id,
+          refresh: false,
+        }),
+        refresh_token: await this.authService.createToken({
+          id: user.id,
+          refresh: true,
+        }),
       });
     } catch (err) {
       const user = await this.userService.create(req.user);
 
-      const payload: JwtPayload = {
-        sub: user.id,
-      };
-
       res.json({
-        access_token: await this.authService.createToken(payload, false),
-        refresh_token: await this.authService.createToken(payload, true),
+        access_token: await this.authService.createToken({
+          id: user.id,
+          refresh: false,
+        }),
+        refresh_token: await this.authService.createToken({
+          id: user.id,
+          refresh: true,
+        }),
       });
     }
   }
