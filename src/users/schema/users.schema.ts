@@ -17,7 +17,7 @@ export class User {
   name: string;
 
   @Prop({ required: true })
-  identity: string;
+  identity: number;
 
   @Prop({ required: true })
   grade: number;

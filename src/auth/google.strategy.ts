@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
-import 'dotenv/config';
 import { discrimMajor } from 'src/resources/major';
+import 'dotenv/config';
 
 @Injectable()
 export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
@@ -34,7 +34,7 @@ export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
         id: id,
         email: emails[0].value,
         name: name.givenName,
-        identity: name.familyName,
+        identity: Number(name.familyName),
         grade: Number(name.familyName.slice(0, 1)),
         class: Number(name.familyName.slice(1, 3)),
         num: Number(name.familyName.slice(3, 5)),

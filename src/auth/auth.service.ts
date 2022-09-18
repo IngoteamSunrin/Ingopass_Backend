@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interface/payload.interface';
 import { ConfigService } from '@nestjs/config';
-import 'dotenv/config';
 
 @Injectable()
 export class AuthService {
