@@ -1,2 +1,13 @@
-# IngoPass_Backend
-선린인터넷고등학교 전자학생증 서비스 IngoPass 백엔드 저장소
+# Ingopass Backend
+> 선린인터넷고등학교 전자학생증서비스 Ingopass의 백엔드입니다.
+
+## Run
+
+```bash
+yarn
+npm run start
+```
+
+## Environment
+
+환경변수 파일은 인고팀 노션을 참고해주세요.
