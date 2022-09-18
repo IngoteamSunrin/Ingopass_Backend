@@ -10,12 +10,12 @@ const neis = new Neis({
 @Injectable()
 export class MealService {
   constructor() { }
-  async mealFind(): Promise<any> {
+  async mealFind(date: string): Promise<any> {
     try {
       const mealInfo = await neis.getMealInfo({
         ATPT_OFCDC_SC_CODE: "B10",
         SD_SCHUL_CODE: "7010536",
-        MLSV_FROM_YMD: "20220919"
+        MLSV_FROM_YMD: date
       })
       const info = mealInfo[0].DDISH_NM.split('<br/>')
       const returnmeal = []
