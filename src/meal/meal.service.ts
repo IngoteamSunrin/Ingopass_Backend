@@ -4,13 +4,9 @@ import Neis from '@my-school.info/neis-api';
 
 @Injectable()
 export class MealService {
-  constructor(
-    private readonly neisService = new Neis({
-      KEY: process.env.NEIS_APIKEY,
-      Type: 'json',
-    }),
-  ) {}
-  async mealFind(date: string): Promise<any> {
+  neisService = new Neis({ KEY: process.env.NEIS_APIKEY, Type: 'json' });
+
+  async findMeal(date: string): Promise<any> {
     try {
       const mealInfo = await this.neisService.getMealInfo({
         ATPT_OFCDC_SC_CODE: 'B10',

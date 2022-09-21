@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-
 import { MealController } from './meal.controller';
 import { MealService } from './meal.service';
 

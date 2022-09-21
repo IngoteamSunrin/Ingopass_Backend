@@ -12,7 +12,7 @@ export class AuthController {
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async login(@Req() req) {}
+  async login() {}
 
   @Get('refresh')
   async refresh(@Req() req, @Res() res: any): Promise<void> {

@@ -12,14 +12,14 @@ export class AuthService {
 
   async createToken(payload: JwtPayload): Promise<string> {
     if (payload.refresh) {
-      const token = this.jwtService.sign(payload, {
+      const token = await this.jwtService.signAsync(payload, {
         algorithm: 'HS512',
         secret: this.configService.get<string>('JWT_SECRET'),
         expiresIn: '1y',
       });
       return token;
     } else {
-      const token = this.jwtService.sign(payload, {
+      const token = await this.jwtService.signAsync(payload, {
         algorithm: 'HS512',
         secret: this.configService.get<string>('JWT_SECRET'),
         expiresIn: '1w',
@@ -30,7 +30,7 @@ export class AuthService {
 
   async verify(token: string): Promise<JwtPayload> {
     try {
-      const { id, refresh }: any = await this.jwtService.verify(token, {
+      const { id, refresh }: any = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
       });
       return { id: id, refresh: refresh };

@@ -5,9 +5,9 @@ import { MealService } from './meal.service';
 export class MealController {
   constructor(private readonly mealService: MealService) {}
 
-  @Get(':date')
+  @Get()
   async mealInfoDay(@Param('date') date: string): Promise<any> {
     // return method: /20220919, /20230101
-    return this.mealService.mealFind(date);
+    return this.mealService.findMeal(date);
   }
 }
