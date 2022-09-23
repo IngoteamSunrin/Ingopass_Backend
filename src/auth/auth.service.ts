@@ -35,7 +35,6 @@ export class AuthService {
       });
       return { id: id, refresh: refresh };
     } catch (err) {
-      console.log(err);
       if (err.name == 'TokenExpiredError') {
         throw new HttpException(
           '토큰이 만료되었습니다.',

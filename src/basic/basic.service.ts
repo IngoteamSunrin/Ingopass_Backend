@@ -26,7 +26,6 @@ export class BasicService {
       }
       return { data: meal };
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         'API 요청이 잘못되었습니다.',
         HttpStatus.BAD_REQUEST,

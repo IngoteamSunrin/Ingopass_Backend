@@ -50,7 +50,6 @@ export class BasicController {
     if (!date) {
       date = new Date().toJSON().slice(0, 10).replace(/-/g, '');
     }
-    console.log(date);
     return this.basicService.findMeal(date);
   }
 
