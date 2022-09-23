@@ -5,7 +5,9 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MealModule } from './meal/meal.module';
+import { MealModule } from './basic/meal.module';
+import { RentalController } from './rental/rental.controller';
+import { RentalModule } from './rental/rental.module';
 
 @Module({
   imports: [
@@ -26,8 +28,9 @@ import { MealModule } from './meal/meal.module';
       inject: [ConfigService],
     }),
     ConfigModule.forRoot({ isGlobal: true }),
+    RentalModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, RentalController],
   providers: [AppService],
 })
 export class AppModule {}
