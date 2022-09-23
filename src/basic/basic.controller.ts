@@ -1,13 +1,16 @@
-import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import {
   ApiParam,
   ApiTags,
   ApiCreatedResponse,
   ApiOperation,
+  ApiBody,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { PrivilegedGuard } from 'src/auth/guard/privileged-auth.guard';
 import { BasicService } from './basic.service';
+import { CreateNoticeDto } from './dto/create-notice.dto';
+import { Notice } from './schema/notice.schema';
 
 @Controller('basic')
 @ApiTags('Basic')
@@ -52,5 +55,24 @@ export class BasicController {
 
   @Post('notice')
   @UseGuards(PrivilegedGuard)
-  async postNotice(): Promise<any> {}
+  @ApiOperation({
+    summary: '급식 정보',
+    description:
+      '해당 날짜의 급식을 불러옵니다. 값이 없으면 오늘의 급식을 불러옵니다.',
+  })
+  @ApiBody({ type: CreateNoticeDto })
+  async postNotice(@Body() createNoticeDto: CreateNoticeDto): Promise<Notice> {
+    return await this.basicService.createNotice(createNoticeDto);
+  }
+
+  @Get('notice')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: '급식 정보',
+    description:
+      '해당 날짜의 급식을 불러옵니다. 값이 없으면 오늘의 급식을 불러옵니다.',
+  })
+  async getNotice(): Promise<Notice[]> {
+    return await this.basicService.findAllNotice();
+  }
 }

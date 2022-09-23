@@ -34,12 +34,12 @@ export class BasicService {
     }
   }
 
-  async create(data: object): Promise<Notice> {
+  async createNotice(data: object): Promise<Notice> {
     const newNotice = new this.noticeModel(data);
     return newNotice.save();
   }
 
-  async findAll(): Promise<Notice[]> {
+  async findAllNotice(): Promise<Notice[]> {
     return this.noticeModel.find().exec();
   }
 }

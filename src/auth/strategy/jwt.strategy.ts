@@ -26,33 +26,3 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
   }
 }
-
-@Injectable()
-export class SpecialStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly userService: UsersService) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET,
-    });
-  }
-
-  async validate(payload: JwtPayload) {
-    if (!payload.refresh) {
-      const user = await this.userService.findById(payload.id);
-      if (user.name in [11010, 11007, 10517, 99999]) {
-        return user;
-      } else {
-        throw new HttpException(
-          '해당 경로는 학생회와 Ingoteam만 접근 가능한 경로입니다.',
-          HttpStatus.UNAUTHORIZED,
-        );
-      }
-    } else {
-      throw new HttpException(
-        '잘못된 토큰 형식입니다. Access Token을 전달해주세요.',
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-  }
-}

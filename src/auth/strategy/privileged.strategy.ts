@@ -6,7 +6,10 @@ import { UsersService } from 'src/users/users.service';
 import 'dotenv/config';
 
 @Injectable()
-export class SpecialStrategy extends PassportStrategy(Strategy) {
+export class PrivilegedStrategy extends PassportStrategy(
+  Strategy,
+  'privileged',
+) {
   constructor(private readonly userService: UsersService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -18,7 +21,7 @@ export class SpecialStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload) {
     if (!payload.refresh) {
       const user = await this.userService.findById(payload.id);
-      if (user.name in [11010, 11007, 10517, 99999]) {
+      if ([11010, 11007, 10517, 99999].includes(user.identity)) {
         return user;
       } else {
         throw new HttpException(

@@ -14,7 +14,7 @@ export class Notice {
   content: string;
 
   @Prop({ required: true })
-  date: Date;
+  date: string;
 }
 
 export const NoticeSchema = SchemaFactory.createForClass(Notice);
