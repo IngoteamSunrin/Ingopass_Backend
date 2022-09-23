@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { MealService } from './meal.service';
@@ -8,7 +8,7 @@ import { MealService } from './meal.service';
 export class MealController {
   constructor(private readonly mealService: MealService) {}
 
-  @Get()
+  @Get('/')
   @UseGuards(JwtAuthGuard)
   @ApiParam({
     type: 'string',
@@ -16,7 +16,7 @@ export class MealController {
     description: '급식을 불러올 날짜',
     example: '20220923',
   })
-  async mealInfoDay(@Param('date') date: string): Promise<any> {
+  async mealInfoDay(@Query('date') date: string): Promise<any> {
     return this.mealService.findMeal(date);
   }
 }
