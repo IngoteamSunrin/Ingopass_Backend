@@ -12,8 +12,10 @@ export class MealService {
       const mealInfo = await this.neisService.getMealInfo({
         ATPT_OFCDC_SC_CODE: 'B10',
         SD_SCHUL_CODE: '7010536',
-        MLSV_FROM_YMD: date,
+        MLSV_YMD: date,
       });
+      console.log('asf');
+      console.log(mealInfo);
       const info = mealInfo[0].DDISH_NM.split('<br/>');
       const returnmeal = [];
       info.forEach((i) => {
