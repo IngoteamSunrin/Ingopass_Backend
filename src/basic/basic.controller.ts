@@ -5,6 +5,7 @@ import {
   ApiCreatedResponse,
   ApiOperation,
   ApiBody,
+  ApiOkResponse,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { PrivilegedGuard } from 'src/auth/guard/privileged-auth.guard';
@@ -56,9 +57,8 @@ export class BasicController {
   @Post('notice')
   @UseGuards(PrivilegedGuard)
   @ApiOperation({
-    summary: '급식 정보',
-    description:
-      '해당 날짜의 급식을 불러옵니다. 값이 없으면 오늘의 급식을 불러옵니다.',
+    summary: '공지 생성',
+    description: '공지를 생성합니다. Ingoteam과 학생회만 접근 권한이 있습니다.',
   })
   @ApiBody({ type: CreateNoticeDto })
   async postNotice(@Body() createNoticeDto: CreateNoticeDto): Promise<Notice> {
@@ -68,9 +68,12 @@ export class BasicController {
   @Get('notice')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
-    summary: '급식 정보',
-    description:
-      '해당 날짜의 급식을 불러옵니다. 값이 없으면 오늘의 급식을 불러옵니다.',
+    summary: '공지 보기',
+    description: '그동안 올라온 모든 공지를 확인합니다.',
+  })
+  @ApiOkResponse({
+    description: 'DB에 저장된 모든 공지들',
+    type: [CreateNoticeDto],
   })
   async getNotice(): Promise<Notice[]> {
     return await this.basicService.findAllNotice();
