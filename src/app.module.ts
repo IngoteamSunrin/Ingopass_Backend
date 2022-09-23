@@ -5,7 +5,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MealModule } from './basic/meal.module';
+import { BasicModule } from './basic/basic.module';
+import { BasicController } from './basic/basic.controller';
 import { RentalController } from './rental/rental.controller';
 import { RentalModule } from './rental/rental.module';
 
@@ -13,7 +14,7 @@ import { RentalModule } from './rental/rental.module';
   imports: [
     AuthModule,
     UsersModule,
-    MealModule,
+    BasicModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -30,7 +31,7 @@ import { RentalModule } from './rental/rental.module';
     ConfigModule.forRoot({ isGlobal: true }),
     RentalModule,
   ],
-  controllers: [AppController, RentalController],
+  controllers: [AppController, BasicController, RentalController],
   providers: [AppService],
 })
 export class AppModule {}

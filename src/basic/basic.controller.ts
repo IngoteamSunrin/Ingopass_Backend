@@ -1,19 +1,20 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import {
   ApiParam,
   ApiTags,
   ApiCreatedResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { MealService } from './meal.service';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { PrivilegedGuard } from 'src/auth/guard/privileged-auth.guard';
+import { BasicService } from './basic.service';
 
-@Controller('meal')
-@ApiTags('Meal')
-export class MealController {
-  constructor(private readonly mealService: MealService) {}
+@Controller('basic')
+@ApiTags('Basic')
+export class BasicController {
+  constructor(private readonly basicService: BasicService) {}
 
-  @Get('/')
+  @Get('meal')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: '급식 정보',
@@ -41,11 +42,15 @@ export class MealController {
       },
     },
   })
-  async mealInfoDay(@Query('date') date: string): Promise<any> {
+  async getMeal(@Query('date') date: string): Promise<object> {
     if (!date) {
       date = new Date().toJSON().slice(0, 10).replace(/-/g, '');
     }
     console.log(date);
-    return this.mealService.findMeal(date);
+    return this.basicService.findMeal(date);
   }
+
+  @Post('notice')
+  @UseGuards(PrivilegedGuard)
+  async postNotice(): Promise<any> {}
 }

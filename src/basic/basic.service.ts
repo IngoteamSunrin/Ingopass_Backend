@@ -1,9 +1,16 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Notice, NoticeDocument } from './schema/notice.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import 'dotenv/config';
 import Neis from '@my-school.info/neis-api';
 
 @Injectable()
-export class MealService {
+export class BasicService {
+  constructor(
+    @InjectModel(Notice.name) private noticeModel: Model<NoticeDocument>,
+  ) {}
+
   neisService = new Neis({ KEY: process.env.NEIS_APIKEY, Type: 'json' });
 
   async findMeal(date: string): Promise<object> {
@@ -25,5 +32,14 @@ export class MealService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  async create(data: object): Promise<Notice> {
+    const newNotice = new this.noticeModel(data);
+    return newNotice.save();
+  }
+
+  async findAll(): Promise<Notice[]> {
+    return this.noticeModel.find().exec();
   }
 }

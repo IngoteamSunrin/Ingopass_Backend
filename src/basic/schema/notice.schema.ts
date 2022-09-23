@@ -5,28 +5,16 @@ export type NoticeDocument = Notice & Document;
 @Schema()
 export class Notice {
   @Prop({ required: true })
-  id: string;
+  type: 'StudentCouncil' | 'Ingoteam';
 
   @Prop({ required: true })
-  email: string;
+  title: string;
 
   @Prop({ required: true })
-  major: string;
+  content: string;
 
   @Prop({ required: true })
-  name: string;
-
-  @Prop({ required: true })
-  identity: number;
-
-  @Prop({ required: true })
-  grade: number;
-
-  @Prop({ required: true })
-  class: number;
-
-  @Prop({ required: true })
-  num: number;
+  date: Date;
 }
 
 export const NoticeSchema = SchemaFactory.createForClass(Notice);
