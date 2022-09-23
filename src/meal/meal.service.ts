@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { cleanMeal } from 'src/resources/meal';
 import 'dotenv/config';
 import Neis from '@my-school.info/neis-api';
 

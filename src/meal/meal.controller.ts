@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { MealService } from './meal.service';
 
 @Controller('meal')
@@ -8,6 +9,7 @@ export class MealController {
   constructor(private readonly mealService: MealService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @ApiParam({
     type: 'string',
     name: 'date',
