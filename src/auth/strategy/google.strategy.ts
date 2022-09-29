@@ -30,15 +30,21 @@ export class IngoStrategy extends PassportStrategy(Strategy, 'google') {
         throw new HttpException('Not Sunrint Email', HttpStatus.UNAUTHORIZED);
       }
 
+      const familyName = isNaN(name.familyName)
+        ? name.familyName
+        : name.givenName;
+      const givenName = isNaN(name.familyName)
+        ? name.givenName
+        : name.familyName;
       const user = {
         id: id,
         email: emails[0].value,
-        name: name.givenName,
-        identity: Number(name.familyName),
-        grade: Number(name.familyName.slice(0, 1)),
-        class: Number(name.familyName.slice(1, 3)),
-        num: Number(name.familyName.slice(3, 5)),
-        major: discrimMajor(Number(name.familyName.slice(1, 3))),
+        name: familyName,
+        identity: Number(givenName),
+        grade: Number(givenName.slice(0, 1)),
+        class: Number(givenName.slice(1, 3)),
+        num: Number(givenName.slice(3, 5)),
+        major: discrimMajor(Number(givenName.slice(1, 3))),
       };
 
       done(null, user);

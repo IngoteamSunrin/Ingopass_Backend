@@ -66,6 +66,7 @@ export class AuthController {
         }),
       });
     } catch (err) {
+      console.log(req.user);
       const user = await this.userService.create(req.user);
 
       res.json({

@@ -6,6 +6,7 @@ import {
   ApiOperation,
   ApiBody,
   ApiOkResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { PrivilegedGuard } from 'src/auth/guard/privileged-auth.guard';
@@ -19,6 +20,7 @@ export class BasicController {
   constructor(private readonly basicService: BasicService) {}
 
   @Get('meal')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: '급식 정보',
