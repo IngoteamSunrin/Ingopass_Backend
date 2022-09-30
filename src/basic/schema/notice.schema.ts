@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export type NoticeDocument = Notice & Document;
-@Schema()
+@Schema({ versionKey: false })
 export class Notice {
   @Prop({ required: true })
   type: 'StudentCouncil' | 'Ingoteam';
