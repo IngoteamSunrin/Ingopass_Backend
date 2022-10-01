@@ -19,7 +19,7 @@ export class PrivilegedStrategy extends PassportStrategy(
   }
 
   async validate(payload: JwtPayload) {
-    if (!payload.refresh) {
+    if (!payload.ref) {
       const user = await this.userService.findById(payload.id);
       if ([11010, 11007, 10517, 99999, 10418, 20812].includes(user.identity)) {
         return user;
