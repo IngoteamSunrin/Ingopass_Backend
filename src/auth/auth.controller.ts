@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiCreatedResponse } from '@nestjs/swagger';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guard/jwt-auth.guard';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -30,11 +31,11 @@ export class AuthController {
     res.json({
       access_token: await this.authService.createToken({
         id: decodePayload.id,
-        refresh: false,
+        ref: false,
       }),
       refresh_token: await this.authService.createToken({
         id: decodePayload.id,
-        refresh: true,
+        ref: true,
       }),
     });
   }
@@ -58,11 +59,11 @@ export class AuthController {
       res.json({
         access_token: await this.authService.createToken({
           id: user.id,
-          refresh: false,
+          ref: false,
         }),
         refresh_token: await this.authService.createToken({
           id: user.id,
-          refresh: true,
+          ref: true,
         }),
       });
     } catch (err) {
@@ -72,13 +73,29 @@ export class AuthController {
       res.json({
         access_token: await this.authService.createToken({
           id: user.id,
-          refresh: false,
+          ref: false,
         }),
         refresh_token: await this.authService.createToken({
           id: user.id,
-          refresh: true,
+          ref: true,
         }),
       });
     }
+  }
+
+  @Get('qr')
+  @ApiOperation({
+    summary: 'QR Code Payload 생성',
+    description: '전자학생증 QR Code 생성을 위한 JWT 토큰을 리턴합니다.',
+  })
+  @ApiCreatedResponse({
+    description: 'JWT Token',
+    schema: {
+      example: '<Encoded JWT Token>>',
+    },
+  })
+  @UseGuards(JwtAuthGuard)
+  async qrPayload(@Req() req: any): Promise<object> {
+    return { identity: req.user.identity };
   }
 }
