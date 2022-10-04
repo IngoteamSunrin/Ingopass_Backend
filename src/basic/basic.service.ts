@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import 'dotenv/config';
 import Neis from '@my-school.info/neis-api';
+import { alias } from '../resources/table-alias.json';
 
 @Injectable()
 export class BasicService {
@@ -46,7 +47,7 @@ export class BasicService {
         },
         { ALL_TI_YMD: date, GRADE: grade, CLASS_NM: classnm },
       );
-      const data = timetable.map((x) => x.ITRT_CNTNT);
+      const data = timetable.map((x) => alias[x.ITRT_CNTNT]);
       return { num: timetable.pop().PERIO, data: data };
     } catch (err) {
       throw new HttpException(
