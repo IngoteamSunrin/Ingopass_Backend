@@ -33,6 +33,29 @@ export class BasicService {
     }
   }
 
+  async getTimetable(
+    date: string,
+    grade: string,
+    classnm: string,
+  ): Promise<object> {
+    try {
+      const timetable = await this.neisService.getTimetable(
+        {
+          ATPT_OFCDC_SC_CODE: 'B10',
+          SD_SCHUL_CODE: '7010536',
+        },
+        { ALL_TI_YMD: date, GRADE: grade, CLASS_NM: classnm },
+      );
+      const data = timetable.map((x) => x.ITRT_CNTNT);
+      return { num: timetable.pop().PERIO, data: data };
+    } catch (err) {
+      throw new HttpException(
+        'API 요청이 잘못되었습니다.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
   async createNotice(data: object): Promise<Notice> {
     const newNotice = new this.noticeModel(data);
     return newNotice.save();

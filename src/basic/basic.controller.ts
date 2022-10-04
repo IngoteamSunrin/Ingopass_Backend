@@ -55,6 +55,19 @@ export class BasicController {
     return this.basicService.findMeal(date);
   }
 
+  @Get('timetable')
+  @UseGuards(JwtAuthGuard)
+  async getTimeTable(
+    @Query('date') date: string,
+    @Query('grade') grade: string,
+    @Query('class') classnm: string,
+  ): Promise<object> {
+    if (!date) {
+      date = new Date().toJSON().slice(0, 10).replace(/-/g, '');
+    }
+    return this.basicService.getTimetable(date, grade, classnm);
+  }
+
   @Post('notice')
   @UseGuards(PrivilegedGuard)
   @ApiOperation({
