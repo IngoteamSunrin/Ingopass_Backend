@@ -66,5 +66,5 @@ jobs:
         script: |
           docker pull truetype24/ingopassbackend:latest
           docker rm -f ingopass-backend
-          docker run --name ingopass-backend --env-file /etc/ingopass.env --network tmp_default -p 3000:3000 -d truetype24/ingopassbackend
+          docker run --name ingopass-backend --env-file /etc/ingopass.env -p 3000:3000 -d truetype24/ingopassbackend
           docker rmi $(docker images -f "dangling=true" -q)
