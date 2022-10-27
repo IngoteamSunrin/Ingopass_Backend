@@ -19,8 +19,7 @@ import { RentalModule } from './rental/rental.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URL'),
-        user: configService.get<string>('MONGODB_USER'),
-        password: configService.get<string>('MONGODB_PASSWORD'),
+        dbName: 'ingopass',
 
         connectionFactory: (connection) => {
           return connection;
