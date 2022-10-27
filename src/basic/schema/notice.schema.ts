@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export type NoticeDocument = Notice & Document;
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, timestamps: true })
 export class Notice {
   @Prop({ required: true })
   type: 'StudentCouncil' | 'Ingoteam';
@@ -12,9 +12,6 @@ export class Notice {
 
   @Prop({ required: true })
   content: string;
-
-  @Prop({ required: true })
-  date: string;
 }
 
 export const NoticeSchema = SchemaFactory.createForClass(Notice);

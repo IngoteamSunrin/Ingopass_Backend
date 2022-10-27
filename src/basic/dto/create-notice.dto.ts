@@ -1,4 +1,4 @@
-import { IsString, IsDateString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateNoticeDto {
@@ -30,13 +30,4 @@ export class CreateNoticeDto {
       '와 비챤 이쁘다 고세구도 이쁘다 주르르도 이쁘다 아이네도 이쁘다 릴파도 이쁘다 징버거도 긔얍다 그냥 다 귀엽고 이쁘다',
   })
   content: string;
-
-  @IsDateString()
-  @IsNotEmpty()
-  @ApiProperty({
-    type: String,
-    description: '공지가 올라간 날짜',
-    example: '20220924',
-  })
-  date: string;
 }
