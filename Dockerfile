@@ -5,7 +5,7 @@ WORKDIR /usr/app
 COPY yarn.lock ./
 COPY package.json ./
 
-RUN yarn install
+RUN yarn install --frozen-lockfile --no-cache --production --network-timeout 100000
 
 COPY . .
 
